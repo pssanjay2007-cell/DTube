@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://dtube-api.onrender.com";
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
 const errorMessageDiv = document.querySelector(".error-message");
