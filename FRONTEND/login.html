@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTube - Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+   <body>
+    <div class="split-container">
+        <div class="left-panel">
+            <!--A good image to be kept in the left side-->
+        </div>
+        <div class="right-panel">
+           <div class="form-wrapper">
+            <h2>Log in to account</h2>
+            <p class="subtitle">New to DTube? <a href="signup.html" >Create an account</a></p>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" required placeholder="name@domain.com">
+                
+                </div>
+                <div class="input-group password-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required placeholder="........">
+                </div>
+                <button type="submit" class="btn-main">Log In</button>
+            </form>
+            <div class="error-message"></div>
+            <div class="auth-divider">Or register with</div>
+            <div class = "oauth-row" >
+                <button type="button" id="google-btn" class="btn-oauth">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="16">
+                    Google
+                </button>
+                <button type="button" id="dauth-btn" class="btn-oauth-dauth">
+                    ⚡ DAuth
+                </button>
+            </div>
+           </div>
+        </div>
+
+    </div>
+
+    <script src="scripts/auth.js"></script>
+   </body>
+    
+</html>

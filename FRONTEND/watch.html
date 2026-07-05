@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DTube - Playing Stream</title>
+	<link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/watch.css">
+</head>
+
+<body>
+	<header class="nav-bar">
+		<div class="nav-left">
+			<div class="logo" style="cursor: pointer;" onclick="window.location.href='/index.html'">
+				D<span>Tube</span>
+			</div>
+		</div>
+		<div class="nav-mid"></div>
+		<div class="nav-right">
+			<button id="btn-profile" class="profile-btn">Profile</button>
+			<button id="btn-logout" class="logout-btn">Sign Out</button>
+		</div>
+	</header>
+
+	<div class="main-container">
+		<aside class="sidebar">
+			<nav class="sidebar-menu">
+				<button id="menu-feed" class="menu-item">Your Feed</button>
+				<button id="menu-trending" class="menu-item">Trending Videos</button>
+				<button id="menu-studio" class="menu-item">Upload Studio</button>
+				<button id="menu-admin" class="menu-item"
+					style="display: none; border: 1px dashed #ff0000; color: #ff0000;">🛡️ Admin Desk</button>
+			</nav>
+		</aside>
+
+		<main class="content-feed">
+			<div class="player-workspace">
+				<div class="video-wrapper">
+					<video id="dtube-player" controls autoplay controlsList="nodownload"></video>
+				</div>
+
+				<div class="media-meta-details">
+					<h1 id="player-video-title">Syncing media context...</h1>
+					<div class="creator-info-row">
+						<div class="creator-profile-badge">
+							<div class="creator-avatar-small">👤</div>
+							<div class="creator-name-meta">
+								<h4 id="player-creator-name">Loading Creator...</h4>
+							</div>
+							<button id="btn-subscribe" class="sub-btn">Subscribe</button>
+						</div>
+						<div class="video-meta-right">
+							<button id="btn-report" class="report-btn">⚠️ Report</button>
+							<div class="video-stats" id="player-video-views">👁️ 0 views</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="description-box" id="player-video-desc">
+					Establishing safe secure channel pipelines to cloud storage clusters...
+				</div>
+
+				<div class="comments-section">
+					<h3 id="comments-count">Comments (0)</h3>
+					<form id="comment-form" class="comment-input-block">
+						<input type="text" id="comment-text" placeholder="Add a public comment..." required>
+						<button type="submit" class="btn-comment-submit">Comment</button>
+					</form>
+					<div id="comments-list"></div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="/scripts/auth.js"></script>
+	<script src="/scripts/watch.js"></script>
+</body>
+
+</html>

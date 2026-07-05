@@ -1,0 +1,99 @@
+.upload-area{
+	max-width: 650px;
+	margin:40px auto;
+	background-color: #16161a;
+	padding:32px;
+	border-radius: 2px;
+	border:1px solid #24242b;
+}
+
+.form-group{
+	margin-bottom: 24px;
+	display:flex;
+	flex-direction: column;
+	gap:8px;
+}
+
+.form-group label{
+	color:#a0a0ab;
+	font-size:14px;
+	font-weight:600;
+}
+
+.form-group input[type="text"],.form-group textarea{
+	background-color: #0f0f11;
+	border: 1px solid #24242b;
+	border-radius: 6px;
+	padding: 12px;
+	color: white;
+	outline: none;
+	font-size: 15px;
+	transition: border-color 0.2s;
+}
+
+.form-group input[type="text"]:focus,.form-group textarea:focus {
+	border-color: #ff0000;
+}
+
+.form-group textarea{
+	resize: vertical;
+	height:140px;
+}
+
+.file-dropzone{
+	border: 2px dashed #24242b;
+	padding: 32px;
+	text-align:center;
+	border-radius:8px;
+	background-color: #0f0f11;
+	cursor:pointer;
+	transform: 0.2s ease;
+}
+
+.file-dropzone:hover {
+	border-color: #ff0000;
+}
+
+.file-dropzone input[type="file"] {
+	cursor: pointer;
+}
+
+.btn-publish {
+	background-color: #ff0000;
+	color: white;
+	border: none;
+	padding: 14px;
+	border-radius: 6px;
+	font-weight: 700;
+	cursor: pointer;
+	width: 100%;
+	font-size: 16px;
+	transition: background-color 0.2s;
+}
+
+.btn-publish:hover {
+	background-color: #cc0000;
+}
+
+.status-indicator {
+	margin-top: 16px;
+	text-align: center;
+	font-size: 14px;
+	display: none;
+}
+
+input[type="file"]::file-selector-button {
+	background-color: #24242b;
+	color: white;
+	border: 1px solid #3a3a44;
+	padding: 6px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: 0.2s;
+	margin-right: 10px;
+}
+
+input[type="file"]::file-selector-button:hover {
+	background-color: #32323d;
+	border-color: #ff0000;
+}

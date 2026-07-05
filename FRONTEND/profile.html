@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>DTube - Profile</title>
+		<link rel="stylesheet" href="/css/index.css">
+		<link rel="stylesheet" href="/css/profile.css">
+	</head>
+	<body>
+		<header class="nav-bar">
+			<div class="nav-left">
+				<div class="logo" style="cursor: pointer;" onclick="window.location.href='/index.html'">
+					D<span>Tube</span>
+				</div>
+			</div>
+			<div class="nav-mid"></div>
+			<div class="nav-right">
+				<button id="btn-logout" class="logout-btn">Sign Out</button>
+			</div>
+		</header>
+		<div class="main-container">
+			<aside class="sidebar">
+				<nav class="sidebar-menu">
+					<button id="menu-feed" class="menu-item">Your Feed</button>
+					<button id="menu-studio" class="menu-item">Upload Studio</button>
+				</nav>
+			</aside>
+		
+			<main class="content-feed">
+				<div class="profile-header-card">
+					<div class="profile-avatar-large">👤</div>
+					<div class="profile-details">
+						<h2 id="profile-username">Loading Creator...</h2>
+						<p id="profile-email">email@domain.com</p>
+		
+						<div class="stats-row">
+							<div class="stat-item">🔴 Subscribers: <span id="stat-subscribers">0</span></div>
+							<div class="stat-item">🎬 Total Uploads: <span id="stat-video-count">0</span></div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="section-divider">
+					<button id="my-content" class="profile-option active">My Content</button>
+					<button id="watch-history" class="profile-option">History</button>
+				</div>
+				<div id="my-video-grid" class="video-grid">
+					<div class="loading-placeholder">Syncing videos...</div>
+				</div>
+			</main>
+		</div>
+		
+		<script src="/scripts/auth.js"></script>
+		<script src="/scripts/profile.js"></script>
+	</body>
+</html>

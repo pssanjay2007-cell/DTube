@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>DTube - Home</title>
+		<link rel="stylesheet" href="/css/index.css">
+	</head>
+	<body>
+		<header class="nav-bar">
+			<div class="nav-left">
+				<div class="logo" style="cursor: pointer;" onclick="window.location.href='/index.html'">
+					D<span class="highlight-by-red">Tube</span>
+				</div>
+			</div>
+			<div class = "nav-mid">
+				<form id="search-form" class="search-box">
+					<input type="text" id="search-input" placeholder="Search Videos...">
+					<button type="submit" class="search-btn">🔍</button>
+				</form>
+			</div>
+			<div class="nav-right">
+				<button id="btn-profile" class="profile-btn">Profile</button>
+				<button id="btn-logout" class="logout-btn">Sign Out</button>
+			</div>
+		</header>
+
+		<div class="main-container">
+			<aside class="sidebar">
+				<nav class="sidebar-menu">
+					<button id="menu-feed" class="menu-item active">Your Feed</button>
+					<button id="menu-trending" class="menu-item">Trending Videos</button>
+					<button id="menu-studio" class="menu-item">Upload Studio</button>
+				</nav>
+			</aside>
+			<main class="content-feed">
+				<h2 id="feed-title">Recommended Videos</h2>
+				<div id="video-grid" class="video-grid">
+					
+				</div>
+			</main>
+		</div>
+		<script src="/scripts/auth.js"></script>
+		<script src="/scripts/index.js"></script>
+	</body>
+</html>

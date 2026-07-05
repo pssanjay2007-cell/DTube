@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DTube - SignUp</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+    <div class="split-container">
+        <div class="left-panel">
+            <!--A good image to be kept in the left side-->
+        </div>
+        <div class="right-panel">
+            <div class="form-wrapper">
+                <h2>Welcome to DTube!..</h2>
+                <p class="subtitle">Have an account? <a href="login.html">Log In </a></p>
+
+                <form id="signup-form">
+                    <div class="input-group">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" required placeholder="Username">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" required placeholder="name@domain.com">
+                    </div>
+                    <div class="input-group password-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required placeholder="........">
+                    </div>
+                    <button type="submit" class="btn-main">Sign Up</button>
+                </form>
+                <div class="error-message"></div>
+                <div class="auth-divider">Or Login with</div>
+                <div class="oauth-row">
+                    <button type="button" id="google-btn" class="btn-oauth">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                            alt="Google" width="16">
+                        Google
+                    </button>
+                    <button type="button" id="dauth-btn" class="btn-oauth-dauth">
+                        ⚡ DAuth
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="scripts/auth.js"></script>
+</body>
+
+</html>

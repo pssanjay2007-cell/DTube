@@ -1,0 +1,102 @@
+body{
+   background-color: #121212;
+   font-family: sans-serif;
+   display:flex;
+   justify-content: center;
+   align-items: center;
+   height:100vh;
+   margin:0
+}
+
+.split-container{
+    background-color:#000000;
+    color:#ffffff;
+    display: flex;
+    width:750px;
+    border-radius: 8px;
+    overflow: hidden;
+
+
+}
+
+.left-panel{
+    flex:1;
+    background-color: #222;
+    background-image: url('../public/login-page.jpg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.right-panel{
+    flex:1;
+    padding:40px;
+}
+
+h2{
+    margin-top:0;
+}
+
+a{
+    color:#4caf50;
+}
+
+.input-group{
+    margin-bottom:15px;
+
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-size: 0.9rem;
+
+}
+
+input{
+    width:100%;
+    padding:8px;
+    box-sizing:border-box;
+    background:#222;
+    border: 1px solid #444;
+    color:#fff;
+    border-radius:4px;
+}
+
+.btn-main{
+    width:100%;
+    padding:10px;
+    background-color: #4caf50;
+    border:none;
+    color:white;
+    cursor:pointer;
+    border-radius:4px;
+}
+
+.auth-divider{
+    text-align:center;
+    margin:20px 0;
+    font-size: 0.8rem;;
+    color:#aaa;
+
+}
+
+.oauth-row{
+    display:flex;
+    gap:10px;
+}
+
+.btn-oauth,.btn-oauth-dauth{
+    flex:1;
+    padding:8px;
+    background:#222;
+    border:1px solid #444;
+    color:white;
+    cursor:pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+    border-radius: 4px;
+
+}
