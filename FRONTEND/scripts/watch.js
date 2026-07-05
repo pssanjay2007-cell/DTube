@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function initializeWatchPage() {
 	try {
 		const response = await secureFetch(
-			`https://dtube-api.onrender.com/api/videos`,
+			`https://dtube-api-5zzv.onrender.com/api/videos`,
 		);
 		const data = await response.json();
 
@@ -123,7 +123,7 @@ async function handleCommentSubmit(e) {
 
 	try {
 		const response = await secureFetch(
-			`https://dtube-api.onrender.com/api/videos/comment`,
+			`https://dtube-api-5zzv.onrender.com/api/videos/comment`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -150,7 +150,7 @@ async function handleSubscribeToggle() {
 
 	try {
 		const response = await secureFetch(
-			`https://dtube-api.onrender.com/api/users/subscribe/${videoCreatorId}`,
+			`https://dtube-api-5zzv.onrender.com/api/users/subscribe/${videoCreatorId}`,
 			{
 				method: "POST",
 			},
@@ -170,7 +170,7 @@ async function checkInitialSubscriptionStatus() {
 	if (!videoCreatorId) return;
 	try {
 		const response = await secureFetch(
-			"https://dtube-api.onrender.com/api/users/me",
+			"https://dtube-api-5zzv.onrender.com/api/users/me",
 		);
 		if (response.ok) {
 			const data = await response.json();
@@ -202,7 +202,7 @@ async function handleVideoReport() {
 
 	try {
 		const response = await secureFetch(
-			`https://dtube-api.onrender.com/api/videos/report`,
+			`https://dtube-api-5zzv.onrender.com/api/videos/report`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -228,7 +228,7 @@ async function handleVideoReport() {
 async function incrementViewCount() {
 	try {
 		const response = await secureFetch(
-			`https://dtube-api.onrender.com/api/videos/${videoId}/view`,
+			`https://dtube-api-5zzv.onrender.com/api/videos/${videoId}/view`,
 			{
 				method: "PATCH",
 			},
@@ -244,11 +244,14 @@ async function incrementViewCount() {
 
 async function logToWatchHistory() {
 	try {
-		await secureFetch(`https://dtube-api.onrender.com/api/videos/history`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ videoId }),
-		});
+		await secureFetch(
+			`https://dtube-api-5zzv.onrender.com/api/videos/history`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ videoId }),
+			},
+		);
 	} catch (err) {
 		console.warn("Watch history sync deferred:", err.message);
 	}
