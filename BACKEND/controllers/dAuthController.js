@@ -18,6 +18,7 @@ const redirectToDAuth = (req, res) => {
 
 const handleDAuthCallback = async (req, res) => {
 	const code = req.query.code;
+	const frontendBaseUrl = process.env.FRONTEND_URL || "http://localhost:5500";
 
 	if (!code) {
 		return res.status(400).json({ message: "Authorization not provided" });
@@ -85,9 +86,7 @@ const handleDAuthCallback = async (req, res) => {
 		}
 
 		if (foundUser.status === "banned") {
-			return res.redirect(
-				`http://localhost:5500/login.html?error=banned`,
-			);
+			return res.redirect(`${frontendBaseUrl}/login.html?error=banned`);
 		}
 
 		const accessToken = jwt.sign(
@@ -112,7 +111,7 @@ const handleDAuthCallback = async (req, res) => {
 			maxAge: 7 * 24 * 60 * 1000,
 		});
 
-		const frontendRedirectUrl = `http://localhost:5500/oauth-callback.html?accessToken=${accessToken}&role=${foundUser.role}&username=${encodeURIComponent(foundUser.username)}`;
+		const frontendRedirectUrl = `${frontendBaseUrl}/oauth-callback.html?accessToken=${accessToken}&role=${foundUser.role}&username=${encodeURIComponent(foundUser.username)}`;
 		return res.redirect(frontendRedirectUrl);
 	} catch (err) {
 		console.error(
@@ -120,9 +119,7 @@ const handleDAuthCallback = async (req, res) => {
 			err.response?.data || err.message,
 		);
 		console.error("DAuth Error Details", err.response?.data || err.message);
-		return res.redirect(
-			`http://localhost:5500/login.html?error=auth_failed`,
-		);
+		return res.redirect(`${frontendBaseUrl}/login.html?error=auth_failed`);
 	}
 };
 
