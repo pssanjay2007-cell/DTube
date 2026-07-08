@@ -183,4 +183,3 @@ function formatTimeAgo(dateString) {
 	if (months < 12) return `${months}m ago`;
 	return `${Math.floor(months / 12)}y ago`;
 }
-MENU_FEED.addEventListener(() => {});
