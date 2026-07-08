@@ -107,7 +107,7 @@ const handleDAuthCallback = async (req, res) => {
 		res.cookie("jwt", refreshToken, {
 			httpOnly: true,
 			secure: process.env.PRODUCTION === "true",
-			samesite: "None",
+			sameSite: "None",
 			maxAge: 7 * 24 * 60 * 1000,
 		});
 
