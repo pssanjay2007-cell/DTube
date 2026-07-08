@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 	async function fetchProfileData() {
 		try {
 			const videoRes = await secureFetch(
-				"https://dtube-api-5zzv.onrender.com/api/videos",
+				"https://dtube-ycn7.onrender.com/api/videos",
 			);
 			const videoData = await videoRes.json();
 			allVideos = videoData.videos || [];
 
 			const userRes = await secureFetch(
-				"https://dtube-api-5zzv.onrender.com/api/users/me",
+				"https://dtube-ycn7.onrender.com/api/users/me",
 			);
 			if (userRes.ok) {
 				const userData = await userRes.json();

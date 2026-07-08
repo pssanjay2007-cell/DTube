@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://dtube-api-5zzv.onrender.com";
+const BACKEND_URL = "https://dtube-ycn7.onrender.com";
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
 const errorMessageDiv = document.querySelector(".error-message");

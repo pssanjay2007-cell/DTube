@@ -68,7 +68,7 @@ async function loadFeed(type) {
 	currentFeedType = type;
 	showLoading();
 	try {
-		let endpoint = "https://dtube-api-5zzv.onrender.com/api/videos";
+		let endpoint = "https://dtube-ycn7.onrender.com/api/videos";
 		if (type === "trending") {
 			endpoint += "?sort=trending";
 		}
@@ -85,7 +85,7 @@ async function loadSearch(query) {
 	currentFeedType = "search";
 	showLoading();
 	try {
-		const endpoint = `https://dtube-api-5zzv.onrender.com/api/videos/search?q=${encodeURIComponent(query)}`;
+		const endpoint = `https://dtube-ycn7.onrender.com/api/videos/search?q=${encodeURIComponent(query)}`;
 		const response = await secureFetch(endpoint);
 		const data = await response.json();
 		if (!response.ok)
@@ -183,3 +183,4 @@ function formatTimeAgo(dateString) {
 	if (months < 12) return `${months}m ago`;
 	return `${Math.floor(months / 12)}y ago`;
 }
+MENU_FEED.addEventListener(() => {});
