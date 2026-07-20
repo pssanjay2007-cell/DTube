@@ -52,7 +52,7 @@ A modern, self-hosted, lightweight video-sharing platform featuring secure user 
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```text
 DTube/
