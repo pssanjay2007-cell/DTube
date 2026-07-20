@@ -34,17 +34,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 	let allVideos = [];
 	let watchHistoryList = [];
 	let activeUsername = sessionStorage.getItem("username");
+	let activeUserId = null;
 
 	async function fetchProfileData() {
 		try {
 			const videoRes = await secureFetch(
-				"https://dtube-ycn7.onrender.com/api/videos",
+				"http://127.0.0.1:5000/api/videos",
 			);
 			const videoData = await videoRes.json();
 			allVideos = videoData.videos || [];
 
 			const userRes = await secureFetch(
-				"https://dtube-ycn7.onrender.com/api/users/me",
+				"http://127.0.0.1:5000/api/users/me",
 			);
 			if (userRes.ok) {
 				const userData = await userRes.json();
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 				watchHistoryList = realUser?.watchHistory || [];
 				activeUsername = realUser?.username || activeUsername;
+				activeUserId = realUser?._id;
 
 				if (usernameElement && activeUsername)
 					usernameElement.textContent = activeUsername;
@@ -74,7 +76,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 		}
 	}
 
-	function renderVideos(videoList, emptyMessage) {
+	window.triggerVideoDeletion = async function (event, videoId) {
+		event.stopPropagation();
+		event.preventDefault();
+
+		const confirmation = confirm(
+			"Warning: Are you absolutely certain you want to permanently delete this video?",
+		);
+		if (!confirmation) return;
+
+		try {
+			const response = await secureFetch(
+				`http://127.0.0.1:5000/api/videos/${videoId}`,
+				{
+					method: "DELETE",
+				},
+			);
+
+			const data = await response.json();
+			if (!response.ok)
+				throw new Error(data.message || "Deletion request rejected.");
+
+			alert("Video successfully deleted.");
+
+			if (videoGrid)
+				videoGrid.innerHTML =
+					'<div class="loading-placeholder">Updating grid...</div>';
+
+			await fetchProfileData();
+		} catch (err) {
+			alert(`Deletion failed: ${err.message}`);
+		}
+	};
+
+	function renderVideos(videoList, emptyMessage, isMyContent = false) {
 		if (!videoGrid) return;
 		videoGrid.innerHTML = "";
 
@@ -87,7 +122,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 			const card = document.createElement("div");
 			card.className = "video-card";
 			card.style.cssText =
-				"background:#181820; border-radius:6px; overflow:hidden; cursor:pointer;";
+				"background:#181820; border-radius:6px; overflow:hidden; cursor:pointer; position:relative;";
+
+			const deleteButtonHTML = isMyContent
+				? `<button class="card-delete-btn" style="position:relative; z-index:10;" onclick="window.triggerVideoDeletion(event, '${video._id}')">Delete Video</button>`
+				: "";
 
 			card.innerHTML = `
                 <div class="thumbnail-wrapper" style="position:relative; width:100%; height:140px; background:#2a2a35; overflow:hidden;">
@@ -96,14 +135,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                            style="width:100%; height:100%; object-fit:cover; pointer-events:none;">
                     </video>
                 </div>
-                <div style="padding:12px;">
+                <div style="padding:12px; position:relative; z-index:1;">
                     <h4 style="margin:0 0 6px 0; font-size:14px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${video.title}">${video.title}</h4>
-                    <p style="margin:0; font-size:12px; color:#a0a0ab;">${video.views || 0} views • ${new Date(video.createdAt).toLocaleDateString()}</p>
+                    <p style="margin:0; font-size:12px; color:#a0a0ab; margin-bottom: 8px;">${video.views || 0} views • ${new Date(video.createdAt).toLocaleDateString()}</p>
+                    ${deleteButtonHTML}
                 </div>
             `;
 
-			card.addEventListener("click", () => {
-				window.location.href = `/watch.html?v=${video._id}`;
+			card.addEventListener("click", (e) => {
+				if (!e.target.classList.contains("card-delete-btn")) {
+					window.location.href = `/watch.html?v=${video._id}`;
+				}
 			});
 
 			const videoElement = card.querySelector("video");
@@ -127,12 +169,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 			tabMyContent?.classList.add("active");
 			tabHistory?.classList.remove("active");
 
-			const myUploadedVideos = allVideos.filter(
-				(v) => v.creator?.username === activeUsername,
-			);
+			const myUploadedVideos = allVideos.filter((v) => {
+				if (!v.creator) return false;
+				const videoCreatorId = v.creator._id
+					? v.creator._id.toString()
+					: v.creator.toString();
+				return videoCreatorId === activeUserId;
+			});
+
 			renderVideos(
 				myUploadedVideos,
 				"You haven't published any streams yet.",
+				true,
 			);
 		} else {
 			tabHistory?.classList.add("active");
@@ -145,6 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 			renderVideos(
 				historyVideos,
 				"Your watch history library track is empty.",
+				false,
 			);
 		}
 	}

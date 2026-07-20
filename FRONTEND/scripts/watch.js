@@ -13,6 +13,11 @@ const REPORT_BTN = document.getElementById("btn-report");
 const SUBSCRIBE_BTN = document.getElementById("btn-subscribe");
 const ADMIN_DESK_BTN = document.getElementById("menu-admin");
 
+const LIKE_BUTTON = document.getElementById("like-btn");
+const DISLIKE_BUTTON = document.getElementById("dislike-btn");
+const LIKE_COUNT = document.getElementById("like-count");
+const DISLIKE_COUNT = document.getElementById("dislike-count");
+
 const LOGOUT_BTN = document.getElementById("btn-logout");
 const PROFILE_BTN = document.getElementById("btn-profile");
 const MENU_FEED = document.getElementById("menu-feed");
@@ -45,25 +50,38 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (SUBSCRIBE_BTN) {
 		SUBSCRIBE_BTN.addEventListener("click", handleSubscribeToggle);
 	}
+	if (LIKE_BUTTON) {
+		LIKE_BUTTON.addEventListener("click", () => handleToggle("like"));
+	}
+	if (DISLIKE_BUTTON) {
+		DISLIKE_BUTTON.addEventListener("click", () => handleToggle("dislike"));
+	}
 });
 
 async function initializeWatchPage() {
 	try {
 		const response = await secureFetch(
-			`https://dtube-ycn7.onrender.com/api/videos`,
+			`http://127.0.0.1:5000/api/videos/${videoId}`,
 		);
 		const data = await response.json();
 
 		if (!response.ok)
 			throw new Error(data.message || "Failed to load feed data.");
 
-		const currentVideo = data.videos.find((v) => v._id === videoId);
+		const currentVideo = data.video;
 		if (!currentVideo)
 			throw new Error("The requested video could not be located.");
 
 		videoCreatorId = currentVideo.creator?._id;
 
 		renderVideoData(currentVideo);
+		if (LIKE_BUTTON) LIKE_BUTTON.classList.remove("active");
+		if (DISLIKE_BUTTON) DISLIKE_BUTTON.classList.remove("active");
+
+		if (data.interaction?.hasLiked && LIKE_BUTTON)
+			LIKE_BUTTON.classList.add("active");
+		if (data.interaction?.hasDisliked && DISLIKE_BUTTON)
+			DISLIKE_BUTTON.classList.add("active");
 
 		await checkInitialSubscriptionStatus();
 
@@ -86,7 +104,43 @@ function renderVideoData(video) {
 		VIDEO_DESC.textContent =
 			video.description || "No description provided.";
 
+	if (LIKE_COUNT) {
+		LIKE_COUNT.textContent = video.likesCount || 0;
+	}
+	if (DISLIKE_COUNT) {
+		DISLIKE_COUNT.textContent = video.dislikesCount || 0;
+	}
+
 	renderCommentsList(video.comments || []);
+}
+
+async function handleToggle(type) {
+	try {
+		const response = await secureFetch(
+			`http://127.0.0.1:5000/api/videos/${videoId}/${type}`,
+			{ method: "POST" },
+		);
+		const data = await response.json();
+
+		if (!response.ok) {
+			throw new Error(
+				data.message || "Interaction prohibited by backend",
+			);
+		}
+
+		if (LIKE_COUNT) LIKE_COUNT.textContent = data.likesCount;
+		if (DISLIKE_COUNT) DISLIKE_COUNT.textContent = data.dislikesCount;
+
+		if (type === "like" && LIKE_BUTTON && DISLIKE_BUTTON) {
+			LIKE_BUTTON.classList.toggle("active");
+			DISLIKE_BUTTON.classList.remove("active");
+		} else if (type === "dislike" && DISLIKE_BUTTON && LIKE_BUTTON) {
+			DISLIKE_BUTTON.classList.toggle("active");
+			LIKE_BUTTON.classList.remove("active");
+		}
+	} catch (err) {
+		alert(`Voting process fault: ${err.message}`);
+	}
 }
 
 function renderCommentsList(comments) {
@@ -123,7 +177,7 @@ async function handleCommentSubmit(e) {
 
 	try {
 		const response = await secureFetch(
-			`https://dtube-ycn7.onrender.com/api/videos/comment`,
+			`http://127.0.0.1:5000/api/videos/comment`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -150,7 +204,7 @@ async function handleSubscribeToggle() {
 
 	try {
 		const response = await secureFetch(
-			`https://dtube-ycn7.onrender.com/api/users/subscribe/${videoCreatorId}`,
+			`http://127.0.0.1:5000/api/users/subscribe/${videoCreatorId}`,
 			{
 				method: "POST",
 			},
@@ -170,7 +224,7 @@ async function checkInitialSubscriptionStatus() {
 	if (!videoCreatorId) return;
 	try {
 		const response = await secureFetch(
-			"https://dtube-ycn7.onrender.com/api/users/me",
+			"http://127.0.0.1:5000/api/users/me",
 		);
 		if (response.ok) {
 			const data = await response.json();
@@ -202,7 +256,7 @@ async function handleVideoReport() {
 
 	try {
 		const response = await secureFetch(
-			`https://dtube-ycn7.onrender.com/api/videos/report`,
+			`http://127.0.0.1:5000/api/videos/report`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -210,16 +264,27 @@ async function handleVideoReport() {
 			},
 		);
 
-		const data = await response.json();
+		const responseText = await response.text();
+		let data = {};
+		if (responseText) {
+			try {
+				data = JSON.parse(responseText);
+			} catch (e) {
+				console.error("Non-JSON server response:", responseText);
+			}
+		}
+
 		if (!response.ok)
 			throw new Error(data.message || "Report could not be processed.");
 
 		alert(
 			"Thank you. This video has been flagged for administrative overview.",
 		);
-		REPORT_BTN.textContent = "⚠️ Flagged";
-		REPORT_BTN.disabled = true;
-		REPORT_BTN.style.opacity = "0.5";
+		if (REPORT_BTN) {
+			REPORT_BTN.textContent = "⚠️ Flagged";
+			REPORT_BTN.disabled = true;
+			REPORT_BTN.style.opacity = "0.5";
+		}
 	} catch (err) {
 		alert(`Reporting failed: ${err.message}`);
 	}
@@ -228,7 +293,7 @@ async function handleVideoReport() {
 async function incrementViewCount() {
 	try {
 		const response = await secureFetch(
-			`https://dtube-ycn7.onrender.com/api/videos/${videoId}/view`,
+			`http://127.0.0.1:5000/api/videos/${videoId}/view`,
 			{
 				method: "PATCH",
 			},
@@ -244,14 +309,11 @@ async function incrementViewCount() {
 
 async function logToWatchHistory() {
 	try {
-		await secureFetch(
-			`https://dtube-ycn7.onrender.com/api/videos/history`,
-			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ videoId }),
-			},
-		);
+		await secureFetch(`http://127.0.0.1:5000/api/videos/history`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ videoId }),
+		});
 	} catch (err) {
 		console.warn("Watch history sync deferred:", err.message);
 	}

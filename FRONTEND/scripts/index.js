@@ -62,13 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 	}
+
+	checkAdminStatus();
 });
 
 async function loadFeed(type) {
 	currentFeedType = type;
 	showLoading();
 	try {
-		let endpoint = "https://dtube-ycn7.onrender.com/api/videos";
+		let endpoint = "http://127.0.0.1:5000/api/videos";
 		if (type === "trending") {
 			endpoint += "?sort=trending";
 		}
@@ -85,7 +87,7 @@ async function loadSearch(query) {
 	currentFeedType = "search";
 	showLoading();
 	try {
-		const endpoint = `https://dtube-ycn7.onrender.com/api/videos/search?q=${encodeURIComponent(query)}`;
+		const endpoint = `http://127.0.0.1:5000/api/videos/search?q=${encodeURIComponent(query)}`;
 		const response = await secureFetch(endpoint);
 		const data = await response.json();
 		if (!response.ok)
@@ -166,6 +168,26 @@ function switchActiveTab(activeButton) {
 		if (btn) btn.classList.remove("active");
 	});
 	if (activeButton) activeButton.classList.add("active");
+}
+
+function checkAdminStatus() {
+	const adminMenuBtn = document.getElementById("menu-admin");
+	if (!adminMenuBtn) return;
+
+	const userRole =
+		typeof getLocalUserRole === "function"
+			? getLocalUserRole()
+			: sessionStorage.getItem("userRole");
+
+	if (userRole === "admin") {
+		adminMenuBtn.style.display = "block"; // Unhide only for administrators
+
+		adminMenuBtn.addEventListener("click", () => {
+			window.location.href = "/admin.html";
+		});
+	} else {
+		adminMenuBtn.style.display = "none"; // Hide by default for standard users
+	}
 }
 
 function formatTimeAgo(dateString) {

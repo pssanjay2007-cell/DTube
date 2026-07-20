@@ -53,6 +53,18 @@ const userSchema = new mongoose.Schema(
 				},
 			},
 		],
+		likedVideos: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Video",
+			},
+		],
+		dislikedVideos: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Video",
+			},
+		],
 
 		refreshToken: { type: String },
 	},

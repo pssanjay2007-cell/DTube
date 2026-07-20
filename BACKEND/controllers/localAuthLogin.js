@@ -39,7 +39,7 @@ const localLogIn = async (req, res) => {
 		res.cookie("jwt", refreshToken, {
 			httpOnly: true,
 			secure: process.env.PRODUCTION === "true",
-			sameSite: "None",
+			sameSite: "Lax",
 			maxAge: 60 * 60 * 24 * 7 * 1000,
 		});
 

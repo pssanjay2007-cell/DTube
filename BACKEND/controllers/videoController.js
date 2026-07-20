@@ -1,4 +1,7 @@
-const { S3Client } = require("@aws-sdk/client-s3");
+const {
+	S3Client,
+	GetBucketInventoryConfigurationCommand,
+} = require("@aws-sdk/client-s3");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const Video = require("../models/Video");
@@ -135,12 +138,12 @@ const addComment = async (req, res) => {
 const reportVideo = async (req, res) => {
 	try {
 		const { videoId, reason } = req.body;
-		const currentUserId = req.user.id;
+		const currentUserId = req.user?.id;
 
-		if (!reason) {
+		if (!reason || !reason.trim()) {
 			return res.status(400).json({
 				success: false,
-				message: "Reason for reporting must be specified",
+				message: "Reason for reporting must be specified.",
 			});
 		}
 
@@ -148,19 +151,23 @@ const reportVideo = async (req, res) => {
 		if (!video) {
 			return res
 				.status(404)
-				.json({ success: false, message: "Video not found" });
+				.json({ success: false, message: "Video not found." });
+		}
+
+		if (!video.reports) {
+			video.reports = [];
 		}
 
 		video.reports.push({
 			reportedBy: currentUserId,
-			reason,
+			reason: reason.trim(),
 		});
 
 		await video.save();
 
 		return res.status(200).json({
 			success: true,
-			message: "Video flagged. Administration notified",
+			message: "Video flagged. Administration notified.",
 		});
 	} catch (err) {
 		return res.status(500).json({ success: false, message: err.message });
@@ -266,13 +273,97 @@ const logWatchHistory = async (req, res) => {
 		return res.status(500).json({ success: false, message: err.message });
 	}
 };
+
+const getVideosById = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const currentUserId = req.user?.id;
+
+		const video = await Video.findById(id)
+			.populate("creator", "username")
+			.exec();
+		if (!video) {
+			return res
+				.status(404)
+				.json({ success: false, message: "Video not found" });
+		}
+
+		let hasLiked = false;
+		let hasDisliked = false;
+
+		if (currentUserId) {
+			const user = await User.findById(currentUserId).exec();
+			if (user) {
+				hasLiked = user.likedVideos
+					? user.likedVideos.includes(id)
+					: false;
+				hasDisliked = user.dislikedVideos
+					? user.dislikedVideos.includes(id)
+					: false;
+			}
+		}
+
+		return res.status(200).json({
+			success: true,
+			video,
+			interaction: {
+				hasLiked,
+				hasDisliked,
+			},
+		});
+	} catch (err) {
+		return res.status(500).json({ success: false, message: err.message });
+	}
+};
+
+const deleteVideo = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const user = req.user?.id;
+		const userRole = req.user?.role;
+
+		const video = await Video.findById(id).exec();
+		if (!video) {
+			return res
+				.status(404)
+				.json({ success: false, message: "Video not found" });
+		}
+
+		let creatorIdString = "";
+		if (video.creator) {
+			creatorIdString = video.creator._id
+				? video.creator._id.toString()
+				: video.creator.toString();
+		}
+
+		const isCreator = creatorIdString && creatorIdString === user;
+		const isAdmin = userRole === "admin";
+
+		if (!isAdmin && !isCreator) {
+			return res
+				.status(403)
+				.json({ success: false, message: "Unauthorised" });
+		}
+
+		await Video.findByIdAndDelete(id);
+
+		return res
+			.status(200)
+			.json({ success: true, message: "Video deleted" });
+	} catch (err) {
+		return res.status(500).json({ success: false, message: err.message });
+	}
+};
+
 module.exports = {
 	upload,
 	uploadVideo,
 	getVideos,
+	getVideosById,
 	addComment,
 	reportVideo,
 	searchVideos,
 	incrementViews,
 	logWatchHistory,
+	deleteVideo,
 };

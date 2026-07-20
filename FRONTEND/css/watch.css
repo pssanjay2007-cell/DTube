@@ -178,3 +178,39 @@ video {
 	align-items: center;
 	justify-content: center;
 }
+
+.like-btn,.dislike-btn{
+	font-size:14px;
+	background-color:#16161a;
+	padding: 6px 14px;
+	border-radius:20px;
+	border: 1px solid #24242b;
+	color:#a0a0ab;
+	cursor:pointer;
+	transition:all 0.2s ease;
+	display:flex;
+	align-items: center;
+	gap:6px;
+}
+
+.like-btn:hover,.dislike-btn:hover{
+	background-color: #24242b;
+
+}
+
+.like-btn.active,
+.like-btn.active span,
+.like-btn.active #like-count {
+	background-color: #3ea6ff !important;
+	border-color: #3ea6ff !important;
+	color: #ffffff !important;
+}
+
+.dislike-btn.active,
+.dislike-btn.active span,
+.dislike-btn.active #dislike-count {
+	background-color: #ff0000 !important;
+	border-color: #ff0000 !important;
+	color: #ffffff !important;
+
+}

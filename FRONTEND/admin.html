@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DTube - Admin Workspace Desk</title>
+	<link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/watch.css">
+</head>
+
+<body>
+	<header class="nav-bar">
+		<div class="nav-left">
+			<div class="logo" style="cursor: pointer;" onclick="window.location.href='/index.html'">
+				D<span>Tube</span>
+			</div>
+		</div>
+		<div class="nav-mid"></div>
+		<div class="nav-right">
+			<button id="btn-profile" class="profile-btn">Profile</button>
+			<button id="btn-logout" class="logout-btn">Sign Out</button>
+		</div>
+	</header>
+
+	<div class="main-container">
+		<aside class="sidebar">
+			<nav class="sidebar-menu">
+				<button id="menu-feed" class="menu-item">Your Feed</button>
+				<button id="menu-trending" class="menu-item">Trending Videos</button>
+				<button id="menu-studio" class="menu-item">Upload Studio</button>
+				<button id="menu-admin" class="menu-item active"
+					style="border: 1px dashed #ff0000; color: #ff0000;">Admin Desk</button>
+			</nav>
+		</aside>
+
+		<main class="content-feed">
+			<div class="player-workspace">
+				<div class="media-meta-details" style="border-bottom: none; margin-bottom: 12px;">
+					<h1>Admin Management Console</h1>
+				</div>
+
+				
+				<div class="description-box" style="border-color: #ff3333; background-color: #16161a;">
+					<h3 style="color: #ffffff; margin-bottom: 16px; font-size: 16px; font-weight: 700;">
+						Reported Content Queue
+					</h3>
+
+					<div id="flagged-queue-list">
+						
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script src="/scripts/auth.js"></script>
+	<script src="/scripts/admin.js"></script>
+</body>
+
+</html>

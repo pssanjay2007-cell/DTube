@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 
 				const response = await secureFetch(
-					"https://dtube-ycn7.onrender.com/api/videos/upload",
+					"http://127.0.0.1:5000/api/videos/upload",
 					{
 						method: "POST",
 						body: formData,

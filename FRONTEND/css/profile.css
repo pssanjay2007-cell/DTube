@@ -83,3 +83,24 @@
 	color:#000000;
 }
 
+
+.card-delete-btn {
+	background-color: #1c1c24;
+	color: #ff3333;
+	border: 1px solid #ff3333;
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin-top: 8px;
+	width: 100%;
+	text-align: center;
+}
+
+.card-delete-btn:hover {
+	background-color: #ff3333;
+	color: #ffffff;
+}
+

@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://dtube-ycn7.onrender.com";
+const BACKEND_URL = "http://127.0.0.1:5000";
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
 const errorMessageDiv = document.querySelector(".error-message");
